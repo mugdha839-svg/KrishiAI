@@ -19,24 +19,46 @@ export async function POST(req: NextRequest) {
 
       const query = lastUserMsg.toLowerCase();
       let mockContent = "";
+      const rand = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+      
+      const intros = [
+        `**Market Analysis for your ${farmerContext?.crops?.[0] || 'farm'}:**\n\n`,
+        `**DeepSeek Insight for ${farmerContext?.name || 'you'}:**\n\n`,
+        `**AI Agro-Financial Breakdown:**\n\n`,
+      ];
+      const nextSteps = [
+        `\n\nShould I check nearby mandi contacts for you?`,
+        `\n\nWant a cost breakdown for your ${farmerContext?.acres || '12'} acres?`,
+        `\n\nNeed the direct application link?`,
+        `\n\nWould you like me to create a step-by-step yield chart?`,
+        `\n\nLet me know if you want a detailed profit margin comparison!`,
+      ];
 
       if (query.includes("sell") || query.includes("wheat") || query.includes("market") || query.includes("price")) {
-        mockContent = `**Market Analysis for your ${farmerContext?.crops?.[0] || 'Wheat'}:**\n\n1. **Current Trend**: Prices are currently stable but expected to rise due to the ongoing fertilizer shortage impacting future yields.\n2. **Recommendation**: Hold your stock for another 2-3 weeks if you have storage capability. Government MSP is ₹2,275 but private mandis in ${farmerContext?.district || 'your area'} are currently offering up to ₹2,400.\n\nShould I check nearby mandi contacts for you?`;
+        const prices = ["₹2,400", "₹2,450", "₹2,380", "₹2,500"];
+        mockContent = rand(intros) + `1. **Current Trend**: ${rand(["Prices are currently stable", "We are seeing a slight upward trend", "Market is highly volatile right now"])} but expected to rise due to the ongoing fertilizer shortage.\n2. **Recommendation**: Hold your stock for another ${rand(["2-3", "1-2", "3-4"])} weeks if you have storage capability. Government MSP is ₹2,275 but private mandis in ${farmerContext?.district || 'your area'} are currently offering up to ${rand(prices)}.` + rand(nextSteps);
       } else if (query.includes("fertilizer") || query.includes("urea") || query.includes("rice")) {
-         mockContent = `**Fertilizer Strategy:**\n\n1. **Optimization**: Given the 34% cost spike due to the Strait of Hormuz crisis, I strongly recommend splitting urea application into 3 smaller doses to maximize efficiency.\n2. **Alternatives**: Consider Nano Urea liquid—it's significantly cheaper right now (₹240/bottle) and replaces a full 45kg bag. Use Azolla in your paddies to naturally boost nitrogen.\n\nWant a cost breakdown for your ${farmerContext?.acres || '12'} acres?`;
+         const savings = ["₹1,500", "₹2,000", "₹2,500"];
+         mockContent = rand(intros) + `1. **Optimization**: Given the 34% cost spike due to the Strait of Hormuz crisis, I strongly recommend splitting urea application into ${rand(["3", "4"])} smaller doses to maximize efficiency.\n2. **Alternatives**: Consider Nano Urea liquid—it's cheap (₹240/bottle) and replaces a full 45kg bag. Using this on your ${farmerContext?.acres || '12'} acres could save you over ${rand(savings)}/acre.` + rand(nextSteps);
       } else if (query.includes("pm-kisan") || query.includes("scheme") || query.includes("eligible")) {
-         mockContent = `**PM-Kisan Eligibility Check:**\n\nYes! Since you own ${farmerContext?.acres || '12'} acres of cultivable land and have a valid Aadhaar linked to your bank account, you are officially eligible for the ₹6,000/year income support.\n\n**Next Steps**:\n1. Ensure your land records are verified on the government portal.\n2. Complete your e-KYC before the next installment hits in May.\n\nNeed the direct application link?`;
+         const statuses = ["officially eligible", "a prime candidate", "fully qualified"];
+         mockContent = rand(intros) + `Yes! Since you own ${farmerContext?.acres || '12'} acres of cultivable land and have a valid Aadhaar linked to your bank account, you are ${rand(statuses)} for the ₹6,000/year income support.\n\n**Next Steps**:\n1. Ensure your land records are verified on the government portal.\n2. Complete your e-KYC before the next installment hits in ${rand(["May", "June"])}.` + rand(nextSteps);
       } else if (query.includes("costs") || query.includes("reduce") || query.includes("expense")) {
-         mockContent = `**Cost Reduction Strategies:**\n\nTo offset the massive 30-40% spike in fertilizer costs, try these immediately on your farm:\n1. **Soil Testing**: Don't guess fertilizer amounts. A basic test can save you ₹2000/acre in over-application.\n2. **Direct Seeded Rice (DSR)**: If you're plotting rice next, DSR saves up to 30% on labor and water pumping costs.\n3. **Solar Pumps**: Leverage the PM-KUSUM scheme for heavily subsidized solar pumps to cut diesel expenses entirely.`;
+         const cuts = ["30-40%", "25-35%", "over 30%"];
+         mockContent = rand(intros) + `To offset the massive ${rand(cuts)} spike in fertilizer costs, try these immediately on your farm:\n1. **Soil Testing**: Don't guess fertilizer amounts. A basic test can save you ₹2000/acre in over-application.\n2. **Direct Seeded Rice (DSR)**: If you're plotting rice next, DSR saves up to ${rand(["30%", "40%", "25%"])} on labor and water pumping costs.\n3. **Solar Pumps**: Leverage the PM-KUSUM scheme for heavily subsidized solar pumps to cut diesel expenses entirely.` + rand(nextSteps);
       } else if (query.includes("next season") || query.includes("best crop") || query.includes("grow")) {
-         mockContent = `**Crop Recommendation for Next Season:**\n\nBased on your soil patterns and the predicted monsoon in ${farmerContext?.state || 'Punjab'}:\n1. **Short-duration Pulses (Moong)**: Extremely profitable right now, requiring minimal fertilizer which perfectly bypasses the current urea crisis.\n2. **Maize (Spring)**: High demand from the poultry sector and far less water-intensive than late-sown wheat.\n\nLet me know if you want a detailed profit margin comparison!`;
+         const crops = [["Short-duration Pulses (Moong)", "Maize (Spring)"], ["Mustard", "Millets"], ["Soybean", "Pulses"]];
+         const rec = crops[Math.floor(Math.random() * crops.length)];
+         mockContent = rand(intros) + `Based on your soil patterns and the predicted monsoon in ${farmerContext?.state || 'your region'}:\n1. **${rec[0]}**: Extremely profitable right now, requiring minimal fertilizer which perfectly bypasses the current urea crisis.\n2. **${rec[1]}**: High demand from local sectors and far less water-intensive than late-sown wheat.` + rand(nextSteps);
       } else if (query.includes("crisis") || query.includes("affecting")) {
-         mockContent = `**Hormuz Crisis Impact on Your Farm:**\n\nThe ongoing conflict has severely disrupted natural gas shipments, directly causing India's urea import costs to spike up to 40%.\n\n**What this means for you**:\n1. Your input costs for the upcoming Kharif season will be significantly higher.\n2. Subsidies might be delayed or strictly rationed by local authorities.\n\n**Action:** Pre-book your fertilizer needs locally now, or rapidly pivot to low-nitrogen crops like pulses.`;
+         const spike = ["35%", "40%", "30%"];
+         mockContent = rand(intros) + `The ongoing Hormuz conflict has severely disrupted natural gas shipments, directly causing India's urea import costs to spike up to ${rand(spike)}.\n\n**What this means for you**:\n1. Your input costs for the upcoming Kharif season will be significantly higher.\n2. Subsidies might be delayed or strictly rationed by local authorities.\n\n**Action:** Pre-book your fertilizer needs locally now, or rapidly pivot to low-nitrogen crops like pulses.` + rand(nextSteps);
       } else {
         if (isHindi) {
-          mockContent = `नमस्ते ${farmerContext?.name || 'किसान भाई'}, आपके सवाल "${lastUserMsg}" के लिए मेरा विश्लेषण:\n\n1. **बाज़ार की स्थिति**: अभी उर्वरक की कीमतें 30-40% अधिक हैं। अपने ${farmerContext?.crops?.[0] || 'फसल'} को अभी बेचना बेहतर होगा।\n2. **सरकारी योजना**: आप PM-Kisan योजना के लिए पात्र हैं, जिससे आपके उर्वरक खर्च में मदद मिलेगी।\n\nक्या मैं आपको किसी विशेष विषय पर जानकारी दूँ?`;
+          const hindiTips = ["अभी उर्वरक की कीमतें बहुत अधिक हैं।", "मौसम को देखते हुए नई फसल की तैयारी करें।"];
+          mockContent = `नमस्ते ${farmerContext?.name || 'किसान भाई'}, आपके सवाल "${lastUserMsg}" के लिए मेरा विश्लेषण:\n\n1. **बाज़ार की स्थिति**: ${rand(hindiTips)} अपने ${farmerContext?.crops?.[0] || 'फसल'} को अभी बेचना बेहतर होगा।\n2. **सरकारी योजना**: आप PM-Kisan योजना के लिए पात्र हैं, जिससे आपके उर्वरक खर्च में मदद मिलेगी।\n\nक्या मैं आपको किसी विशेष विषय पर जानकारी दूँ?`;
         } else {
-          mockContent = `Hello ${farmerContext?.name || 'Farmer'}! I have successfully processed your query: "${lastUserMsg}".\n\nGiven your ${farmerContext?.acres || '12'} acres of ${farmerContext?.crops?.[0] || 'land'}, my DeepSeek reasoning engine recommends leaning into low-nitrogen crop alternatives heavily this month to bypass the 34% urea cost spike.\n\nCould you clarify if you are planning to sow a new batch soon, or are you looking to optimize current operational expenses?`;
+          mockContent = `Hello ${farmerContext?.name || 'Farmer'}! I have successfully processed your query: "${lastUserMsg}".\n\nGiven your ${farmerContext?.acres || '12'} acres of ${farmerContext?.crops?.[0] || 'land'}, ${rand(["my DeepSeek reasoning engine recommends leaning into low-nitrogen crop alternatives heavily this month", "my analysis shows great profit potential by switching to DSR methods", "I'd suggest holding off strict fertilizer application until next week"])} to bypass the 34% urea cost spike.\n\nCould you clarify if you are planning to sow a new batch soon, or are you looking to optimize current operational expenses?`;
         }
       }
 
