@@ -40,17 +40,17 @@ export default function AuthPage() {
         <div className="glass-card-dark p-6 rounded-2xl border border-emerald-500/20">
           {/* Step indicator */}
           <div className="flex items-center justify-center gap-2 mb-6">
-            {[0,1,2,3].map((s)=>(
-              <div key={s} className={`h-1.5 rounded-full transition-all ${step===s?"w-8 bg-emerald-400":"w-4 bg-white/20"}`} />
+            {[0, 1, 2, 3].map((s) => (
+              <div key={s} className={`h-1.5 rounded-full transition-all ${step === s ? "w-8 bg-emerald-400" : "w-4 bg-white/20"}`} />
             ))}
           </div>
 
           {step === 0 && (
-            <motion.div initial={{opacity:0}} animate={{opacity:1}} className="space-y-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
               <h2 className="text-white text-lg font-semibold text-center">Login with Phone</h2>
               <div className="relative">
                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-400/60" />
-                <input type="tel" placeholder="+91 98765 43210" value={phone} onChange={e=>setPhone(e.target.value)}
+                <input type="tel" placeholder="+91 98765 43210" value={phone} onChange={e => setPhone(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-emerald-400/50 transition" />
               </div>
               <button onClick={handleLogin} className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2">
@@ -60,11 +60,11 @@ export default function AuthPage() {
           )}
 
           {step === 1 && (
-            <motion.div initial={{opacity:0}} animate={{opacity:1}} className="space-y-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
               <h2 className="text-white text-lg font-semibold text-center">Enter OTP</h2>
               <p className="text-white/40 text-sm text-center">Sent to {phone || "+91 98765 43210"}</p>
               <div className="flex justify-center gap-3">
-                {[0,1,2,3,4,5].map((i)=>(
+                {[0, 1, 2, 3, 4, 5].map((i) => (
                   <input key={i} type="text" maxLength={1} className="w-11 h-12 text-center bg-white/5 border border-white/10 rounded-xl text-white text-lg font-bold focus:outline-none focus:border-emerald-400/50 transition" />
                 ))}
               </div>
@@ -75,12 +75,12 @@ export default function AuthPage() {
           )}
 
           {step === 2 && (
-            <motion.div initial={{opacity:0}} animate={{opacity:1}} className="space-y-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
               <h2 className="text-white text-lg font-semibold text-center flex items-center justify-center gap-2"><Globe className="w-5 h-5 text-emerald-400" /> Choose Language</h2>
               <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-1">
-                {supportedLanguages.map((l)=>(
-                  <button key={l.code} onClick={()=>setLang(l.code)}
-                    className={`p-3 rounded-xl text-left transition-all border ${lang===l.code?"bg-emerald-500/20 border-emerald-400/50 text-emerald-400":"bg-white/5 border-white/10 text-white/70 hover:bg-white/10"}`}>
+                {supportedLanguages.map((l) => (
+                  <button key={l.code} onClick={() => setLang(l.code)}
+                    className={`p-3 rounded-xl text-left transition-all border ${lang === l.code ? "bg-emerald-500/20 border-emerald-400/50 text-emerald-400" : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"}`}>
                     <p className="text-sm font-medium">{l.native}</p>
                     <p className="text-xs opacity-50">{l.name}</p>
                   </button>
@@ -93,24 +93,24 @@ export default function AuthPage() {
           )}
 
           {step === 3 && (
-            <motion.div initial={{opacity:0}} animate={{opacity:1}} className="space-y-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
               <h2 className="text-white text-lg font-semibold text-center flex items-center justify-center gap-2"><User className="w-5 h-5 text-emerald-400" /> Farm Profile</h2>
-              <input placeholder="Full Name" value={name} onChange={e=>setName(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-white/30 focus:outline-none focus:border-emerald-400/50" />
-              <select value={state} onChange={e=>setState(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white/70 focus:outline-none focus:border-emerald-400/50 appearance-none">
+              <input placeholder="Full Name" value={name} onChange={e => setName(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-white/30 focus:outline-none focus:border-emerald-400/50" />
+              <select value={state} onChange={e => setState(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white/70 focus:outline-none focus:border-emerald-400/50 appearance-none">
                 <option value="" className="bg-gray-900">Select State</option>
-                {cropPredictionDefaults.states.map(s=>(<option key={s} value={s} className="bg-gray-900">{s}</option>))}
+                {cropPredictionDefaults.states.map(s => (<option key={s} value={s} className="bg-gray-900">{s}</option>))}
               </select>
-              <input placeholder="District" value={district} onChange={e=>setDistrict(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-white/30 focus:outline-none focus:border-emerald-400/50" />
+              <input placeholder="District" value={district} onChange={e => setDistrict(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-white/30 focus:outline-none focus:border-emerald-400/50" />
               <div>
                 <label className="text-white/50 text-xs mb-1 block">Land Size: {acres} acres</label>
-                <input type="range" min={1} max={100} value={acres} onChange={e=>setAcres(Number(e.target.value))} className="w-full accent-emerald-500" />
+                <input type="range" min={1} max={100} value={acres} onChange={e => setAcres(Number(e.target.value))} className="w-full accent-emerald-500" />
               </div>
               <div>
                 <label className="text-white/50 text-xs mb-1 block">Crops</label>
                 <div className="flex flex-wrap gap-2">
-                  {cropPredictionDefaults.crops.map(c=>(
-                    <button key={c} onClick={()=>setCrops(prev=>prev.includes(c)?prev.filter(x=>x!==c):[...prev,c])}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition border ${crops.includes(c)?"bg-emerald-500/20 border-emerald-400/50 text-emerald-400":"bg-white/5 border-white/10 text-white/50 hover:text-white/80"}`}>
+                  {cropPredictionDefaults.crops.map(c => (
+                    <button key={c} onClick={() => setCrops(prev => prev.includes(c) ? prev.filter(x => x !== c) : [...prev, c])}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium transition border ${crops.includes(c) ? "bg-emerald-500/20 border-emerald-400/50 text-emerald-400" : "bg-white/5 border-white/10 text-white/50 hover:text-white/80"}`}>
                       {c}
                     </button>
                   ))}
