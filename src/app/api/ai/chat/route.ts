@@ -5,7 +5,7 @@ const DEEPSEEK_URL = "https://api.deepseek.com/chat/completions";
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, model = "deepseek-chat", temperature = 0.3, max_tokens = 1024 } = await req.json();
+    const { messages, model = "deepseek-reasoner", farmerContext, temperature = 0.3, max_tokens = 1024 } = await req.json();
 
     if (!DEEPSEEK_API_KEY) {
       return NextResponse.json(
@@ -14,7 +14,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const systemPrompt = `You are KrishiAI, a bilingual (Hindi/English) AI financial assistant for Indian farmers. Current date: ${new Date().toISOString().split("T")[0]}.
+    const systemPrompt = `You are KrishiAI, a bilingual (Hindi/English) AI financial assistant for Indian farmers powered by DeepSeek. Current date: ${new Date().toISOString().split("T")[0]}.
+
+${farmerContext ? `--- FARMER PROFILE ---
+Name: ${farmerContext.name}
+Location: ${farmerContext.district}, ${farmerContext.state}
+Land: ${farmerContext.acres} acres
+Language Preference: ${farmerContext.language}
+Current Crops: ${farmerContext.crops.join(', ')}
+Active Loans: ${farmerContext.loans?.length || 0}
+Farm Health Score: ${farmerContext.healthScore}
+---` : ''}
 
 GLOBAL CONTEXT: As of March 2026, the Iran-US-Israel conflict has disrupted the Strait of Hormuz, causing a 30-40% surge in global urea prices. India imports 25% of its urea and relies on West Asia for 86% of the natural gas needed for domestic urea production. India has a record wheat harvest of 120.2 MT for the 2025-26 season. The June 2026 monsoon sowing season is at risk due to fertilizer shortages.
 
@@ -38,7 +48,6 @@ Always respond in the language the farmer uses. Be practical, specific, and empa
       body: JSON.stringify({
         model,
         messages: [{ role: "system", content: systemPrompt }, ...messages],
-        temperature,
         max_tokens,
         stream: false,
       }),

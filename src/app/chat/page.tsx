@@ -3,6 +3,7 @@ import AppShell from "@/components/layout/AppShell";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { chatMessages } from "@/lib/mockData";
+import { getCurrentUser } from "@/lib/userAuth";
 import { Send, Mic, MicOff, Sparkles, Loader2, Bot } from "lucide-react";
 
 interface Message {
@@ -23,7 +24,8 @@ const quickQuestions = [
 ];
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>(chatMessages);
+  const user = getCurrentUser();
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [listening, setListening] = useState(false);
@@ -52,17 +54,21 @@ export default function ChatPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          model: "deepseek-reasoner", // Uses DeepSeek-R1 logic capability for complex agro-financial queries
           messages: [...messages, userMsg].map((m) => ({
             role: m.role,
             content: m.text,
           })),
+          farmerContext: user,
         }),
       });
 
       if (!res.ok) throw new Error("AI unavailable");
 
       const data = await res.json();
-      const aiText = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't process that request. Please try again.";
+      const content = data.choices?.[0]?.message?.content || "I'm sorry, I couldn't process that request. Please try again.";
+      const reasoning = data.choices?.[0]?.message?.reasoning_content || "";
+      const aiText = reasoning ? `<think>${reasoning}</think>\n\n${content}` : content;
 
       const aiMsg: Message = {
         id: `a-${Date.now()}`,
@@ -119,9 +125,9 @@ export default function ChatPage() {
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-[var(--text-primary)]">KrishiAI Assistant</h1>
+            <h1 className="text-lg font-bold text-[var(--text-primary)]">KrishiAI DeepSeek Assistant</h1>
             <p className="text-xs text-green-600 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Online — Hindi/English
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Using DeepSeek-R1 Reasoning Engine
             </p>
           </div>
         </div>
@@ -133,8 +139,14 @@ export default function ChatPage() {
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
               <div className="max-w-[85%] sm:max-w-[70%]">
                 <div className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-ai"}>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text.replace(/<think>[\s\S]*?<\/think>/g, '').trim()}</p>
                 </div>
+                {msg.text.includes("<think>") && (
+                   <details className="mt-2 text-xs text-gray-500 bg-gray-50 p-2 rounded-lg" style={{ background: "var(--bg-muted)" }}>
+                     <summary className="cursor-pointer font-medium hover:text-green-600">View DeepSeek Reasoning</summary>
+                     <p className="mt-1 whitespace-pre-wrap">{msg.text.match(/<think>([\s\S]*?)<\/think>/)?.[1]}</p>
+                   </details>
+                )}
                 <p className={`text-[10px] mt-1 px-2 text-[var(--text-muted)] ${msg.role === "user" ? "text-right" : ""}`}>{msg.time}</p>
               </div>
             </motion.div>
