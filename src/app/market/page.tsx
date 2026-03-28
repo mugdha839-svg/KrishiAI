@@ -22,41 +22,41 @@ export default function MarketPage() {
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
         <motion.div variants={item} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Market Prices</h1>
-            <p className="text-sm text-gray-500">Live mandi prices with AI sell recommendations</p>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">Market Prices</h1>
+            <p className="text-sm text-[var(--text-secondary)]">Live mandi prices with AI sell recommendations</p>
           </div>
           <div className="relative">
             <select value={selectedCrop} onChange={(e) => setSelectedCrop(e.target.value as CropKey)}
-              className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-300 cursor-pointer">
+              className="appearance-none bg-[var(--bg-card)] border border-[var(--border)] rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-emerald-300 cursor-pointer">
               {Object.entries(marketPrices).map(([key, c]) => (
                 <option key={key} value={key}>{c.emoji} {c.name}</option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)] pointer-events-none" />
           </div>
         </motion.div>
 
         {/* Price Overview Cards */}
         <motion.div variants={item} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="gc p-5 border-l-4 border-emerald-400">
-            <p className="text-xs text-gray-500 font-medium uppercase">Current Price</p>
-            <p className="text-3xl font-bold text-gray-900 mt-1">₹{crop.currentPrice}</p>
-            <p className="text-xs text-gray-400">{crop.unit}</p>
+            <p className="text-xs text-[var(--text-secondary)] font-medium uppercase">Current Price</p>
+            <p className="text-3xl font-bold text-[var(--text-primary)] mt-1">₹{crop.currentPrice}</p>
+            <p className="text-xs text-[var(--text-muted)]">{crop.unit}</p>
             <div className={`flex items-center gap-1 mt-2 text-sm font-semibold ${crop.weeklyChange >= 0 ? "text-emerald-600" : "text-red-500"}`}>
               {crop.weeklyChange >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
               {crop.weeklyChange >= 0 ? "+" : ""}{crop.weeklyChange}% this week
             </div>
           </div>
           <div className="gc p-5 border-l-4 border-blue-400">
-            <p className="text-xs text-gray-500 font-medium uppercase">MSP (Govt Price)</p>
+            <p className="text-xs text-[var(--text-secondary)] font-medium uppercase">MSP (Govt Price)</p>
             <p className="text-3xl font-bold text-blue-600 mt-1">₹{crop.msp}</p>
-            <p className="text-xs text-gray-400">{crop.unit}</p>
-            <p className="text-xs text-gray-500 mt-2">Minimum Support Price 2025-26</p>
+            <p className="text-xs text-[var(--text-muted)]">{crop.unit}</p>
+            <p className="text-xs text-[var(--text-secondary)] mt-2">Minimum Support Price 2025-26</p>
           </div>
           <div className="gc p-5 border-l-4 border-amber-400">
-            <p className="text-xs text-gray-500 font-medium uppercase">Best Mandi Price</p>
+            <p className="text-xs text-[var(--text-secondary)] font-medium uppercase">Best Mandi Price</p>
             <p className="text-3xl font-bold text-amber-600 mt-1">₹{Math.max(...crop.mandis.map(m => m.price))}</p>
-            <p className="text-xs text-gray-400">{crop.unit}</p>
+            <p className="text-xs text-[var(--text-muted)]">{crop.unit}</p>
             <p className="text-xs text-emerald-600 mt-2 font-medium">
               +{(((Math.max(...crop.mandis.map(m => m.price)) - crop.msp) / crop.msp) * 100).toFixed(1)}% above MSP
             </p>
@@ -66,7 +66,7 @@ export default function MarketPage() {
         {/* Price Chart */}
         <motion.div variants={item} className="gc p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-gray-900">{crop.emoji} {crop.name} — Price Trend (6 Months)</h3>
+            <h3 className="font-bold text-[var(--text-primary)]">{crop.emoji} {crop.name} — Price Trend (6 Months)</h3>
           </div>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={crop.chartData}>
@@ -87,21 +87,21 @@ export default function MarketPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* Mandi Comparison Table */}
           <motion.div variants={item} className="gc p-5">
-            <h3 className="font-bold text-gray-900 mb-4">Nearest Mandis</h3>
+            <h3 className="font-bold text-[var(--text-primary)] mb-4">Nearest Mandis</h3>
             <div className="space-y-2">
               {crop.mandis.map((m, i) => (
-                <div key={i} className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition cursor-pointer border border-transparent hover:border-emerald-100">
+                <div key={i} className="flex items-center justify-between p-3 rounded-xl hover:bg-[var(--bg-muted)] transition cursor-pointer border border-transparent hover:border-emerald-100">
                   <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${i === 0 ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${i === 0 ? "bg-emerald-100 text-emerald-700" : "bg-[var(--bg-muted)] text-[var(--text-secondary)]"}`}>
                       #{i + 1}
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-800">{m.name}</p>
-                      <p className="text-xs text-gray-400 flex items-center gap-1"><MapPin className="w-3 h-3" />{m.distance}</p>
+                      <p className="text-sm font-semibold text-[var(--text-primary)]">{m.name}</p>
+                      <p className="text-xs text-[var(--text-muted)] flex items-center gap-1"><MapPin className="w-3 h-3" />{m.distance}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-gray-900">₹{m.price}</p>
+                    <p className="text-sm font-bold text-[var(--text-primary)]">₹{m.price}</p>
                     <p className={`text-xs font-semibold ${m.trend >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                       {m.trend >= 0 ? "+" : ""}{m.trend}%
                     </p>
@@ -139,10 +139,10 @@ export default function MarketPage() {
 
             {/* Price Alert */}
             <motion.div variants={item} className="gc p-5">
-              <h3 className="font-bold text-gray-900 mb-3">Set Price Alert</h3>
+              <h3 className="font-bold text-[var(--text-primary)] mb-3">Set Price Alert</h3>
               <div className="flex gap-3">
                 <input type="number" placeholder={`₹ Target price (current: ${crop.currentPrice})`}
-                  className="flex-1 p-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300" />
+                  className="flex-1 p-3 rounded-xl border border-[var(--border)] text-sm focus:outline-none focus:ring-2 focus:ring-emerald-300" />
                 <button onClick={() => setAlertSet(true)}
                   className={`px-5 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 transition-all ${
                     alertSet ? "bg-amber-100 text-amber-700" : "bg-emerald-500 text-white hover:bg-emerald-600"

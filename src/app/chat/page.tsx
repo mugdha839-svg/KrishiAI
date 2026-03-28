@@ -114,12 +114,12 @@ export default function ChatPage() {
     <AppShell>
       <div className="flex flex-col h-[calc(100vh-160px)] sm:h-[calc(100vh-130px)]">
         {/* Header */}
-        <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+        <div className="flex items-center gap-3 pb-4 border-b border-[var(--border)]">
           <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center">
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-gray-900">KrishiAI Assistant</h1>
+            <h1 className="text-lg font-bold text-[var(--text-primary)]">KrishiAI Assistant</h1>
             <p className="text-xs text-green-600 flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> Online — Hindi/English
             </p>
@@ -135,7 +135,7 @@ export default function ChatPage() {
                 <div className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-ai"}>
                   <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text}</p>
                 </div>
-                <p className={`text-[10px] mt-1 px-2 text-gray-400 ${msg.role === "user" ? "text-right" : ""}`}>{msg.time}</p>
+                <p className={`text-[10px] mt-1 px-2 text-[var(--text-muted)] ${msg.role === "user" ? "text-right" : ""}`}>{msg.time}</p>
               </div>
             </motion.div>
           ))}
@@ -143,7 +143,7 @@ export default function ChatPage() {
             <div className="flex justify-start">
               <div className="chat-bubble-ai flex items-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin text-green-500" />
-                <span className="text-sm text-gray-500">Thinking...</span>
+                <span className="text-sm text-[var(--text-secondary)]">Thinking...</span>
               </div>
             </div>
           )}
@@ -161,17 +161,17 @@ export default function ChatPage() {
         </div>
 
         {/* Input */}
-        <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+        <div className="flex items-center gap-2 pt-3 border-t border-[var(--border)]">
           <button onClick={toggleVoice}
             className={`p-2.5 rounded-xl transition-all ${
-              listening ? "bg-red-500 text-white animate-pulse" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+              listening ? "bg-red-500 text-white animate-pulse" : "bg-[var(--bg-muted)] text-[var(--text-secondary)] hover:bg-gray-200"
             }`}>
             {listening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
           </button>
           <input type="text" value={input} onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Type your message... (Hindi or English)"
-            className="flex-1 p-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
+            className="flex-1 p-2.5 rounded-xl border border-[var(--border)] text-sm bg-[var(--bg-card)] focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
             disabled={loading} />
           <button onClick={() => sendMessage()} disabled={!input.trim() || loading}
             className="p-2.5 rounded-xl bg-green-500 text-white hover:bg-green-600 transition-all disabled:opacity-40 disabled:cursor-not-allowed">

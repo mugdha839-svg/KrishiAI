@@ -25,7 +25,7 @@ export default function CrisisPage() {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6">
         {/* Header Banner */}
         <motion.div variants={fadeUp} className="bg-red-500 rounded-2xl p-6 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--bg-card)]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
               <ShieldAlert className="w-6 h-6 animate-pulse" />
@@ -39,13 +39,13 @@ export default function CrisisPage() {
                 { label: "DAP", price: crisisData.currentDAPPrice, prev: crisisData.previousDAPPrice, spike: crisisData.dapSpikePct },
                 { label: "MOP", price: crisisData.currentMOPPrice, prev: crisisData.previousMOPPrice, spike: crisisData.mopSpikePct },
               ].map((d) => (
-                <div key={d.label} className="bg-white/10 rounded-xl px-4 py-3">
+                <div key={d.label} className="bg-[var(--bg-card)]/10 rounded-xl px-4 py-3">
                   <p className="text-xs text-white/70">{d.label}</p>
                   <p className="text-2xl font-bold">₹{d.price}</p>
                   <p className="text-xs text-red-200">↑{d.spike}% from ₹{d.prev}</p>
                 </div>
               ))}
-              <div className="bg-white/10 rounded-xl px-4 py-3">
+              <div className="bg-[var(--bg-card)]/10 rounded-xl px-4 py-3">
                 <p className="text-xs text-white/70">Hormuz Status</p>
                 <p className="text-lg font-bold uppercase">{crisisData.hormuzStatus}</p>
                 <p className="text-xs text-red-200">Shipping disrupted</p>
@@ -57,7 +57,7 @@ export default function CrisisPage() {
         {/* Key Alerts */}
         <motion.div variants={fadeUp}>
           <Card padding="lg">
-            <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <h3 className="font-bold text-[var(--text-primary)] mb-3 flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-red-500" /> Key Alerts
             </h3>
             <div className="space-y-2">
@@ -74,7 +74,7 @@ export default function CrisisPage() {
         {/* Price Trend */}
         <motion.div variants={fadeUp}>
           <Card padding="lg">
-            <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 className="font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
               <TrendingUp className="w-5 h-5 text-red-500" /> Fertilizer Price Trend (6 Months)
             </h3>
             <ResponsiveContainer width="100%" height={280}>
@@ -88,9 +88,9 @@ export default function CrisisPage() {
               </LineChart>
             </ResponsiveContainer>
             <div className="flex gap-4 mt-3 justify-center">
-              <span className="flex items-center gap-2 text-xs font-medium text-gray-500"><span className="w-3 h-1.5 rounded bg-red-500" />Urea</span>
-              <span className="flex items-center gap-2 text-xs font-medium text-gray-500"><span className="w-3 h-1.5 rounded bg-amber-500" />DAP</span>
-              <span className="flex items-center gap-2 text-xs font-medium text-gray-500"><span className="w-3 h-1.5 rounded bg-purple-500" />MOP</span>
+              <span className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]"><span className="w-3 h-1.5 rounded bg-red-500" />Urea</span>
+              <span className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]"><span className="w-3 h-1.5 rounded bg-amber-500" />DAP</span>
+              <span className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]"><span className="w-3 h-1.5 rounded bg-purple-500" />MOP</span>
             </div>
           </Card>
         </motion.div>
@@ -99,7 +99,7 @@ export default function CrisisPage() {
           {/* Timeline */}
           <motion.div variants={fadeUp}>
             <Card padding="lg">
-              <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-gray-500" /> Crisis Timeline</h3>
+              <h3 className="font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-[var(--text-secondary)]" /> Crisis Timeline</h3>
               <div className="relative">
                 <div className="absolute left-[15px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-red-400 via-amber-400 to-gray-200" />
                 <div className="space-y-4">
@@ -108,9 +108,9 @@ export default function CrisisPage() {
                     return (
                       <div key={i} className="flex items-start gap-4 pl-1">
                         <div className={`w-[10px] h-[10px] mt-1.5 rounded-full flex-shrink-0 ring-2 ring-white ${isPast ? "bg-red-500" : t.date.includes("Risk") ? "bg-amber-400" : "bg-gray-300"}`} />
-                        <div className={`flex-1 p-3 rounded-xl ${isPast ? "bg-red-50" : "bg-gray-50"}`}>
-                          <p className={`text-xs font-bold ${isPast ? "text-red-600" : "text-gray-500"}`}>{t.date}</p>
-                          <p className="text-sm text-gray-700 mt-0.5">{t.event}</p>
+                        <div className={`flex-1 p-3 rounded-xl ${isPast ? "bg-red-50" : "bg-[var(--bg-muted)]"}`}>
+                          <p className={`text-xs font-bold ${isPast ? "text-red-600" : "text-[var(--text-secondary)]"}`}>{t.date}</p>
+                          <p className="text-sm text-[var(--text-primary)] mt-0.5">{t.event}</p>
                         </div>
                       </div>
                     );
@@ -123,7 +123,7 @@ export default function CrisisPage() {
           {/* State Stock */}
           <motion.div variants={fadeUp}>
             <Card padding="lg">
-              <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2"><Package className="w-5 h-5 text-amber-600" /> State-wise Fertilizer Stock</h3>
+              <h3 className="font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2"><Package className="w-5 h-5 text-amber-600" /> State-wise Fertilizer Stock</h3>
               <div className="space-y-3">
                 {crisisData.stateWiseStock.map((s) => {
                   const pct = Math.round((s.stock / s.required) * 100);
@@ -131,10 +131,10 @@ export default function CrisisPage() {
                   return (
                     <div key={s.state} className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-700 flex items-center gap-1.5"><MapPin className="w-3 h-3 text-gray-400" />{s.state}</span>
+                        <span className="text-sm font-medium text-[var(--text-primary)] flex items-center gap-1.5"><MapPin className="w-3 h-3 text-[var(--text-muted)]" />{s.state}</span>
                         <span className="text-xs font-bold" style={{ color: statusColor }}>{s.stock}M / {s.required}M ({pct}%)</span>
                       </div>
-                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-[var(--bg-muted)] rounded-full overflow-hidden">
                         <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(pct, 100)}%` }} transition={{ duration: 1 }} className="h-full rounded-full" style={{ background: statusColor }} />
                       </div>
                     </div>
@@ -166,9 +166,9 @@ export default function CrisisPage() {
                 { emoji: "🌾", title: "Sell Wheat This Week", desc: "Jalandhar Mandi offering ₹2,310/qtl. Get cash flow before monsoon input costs peak." },
                 { emoji: "🧪", title: "Consider Organic Alternatives", desc: "Neem-coated urea and bio-fertilizers can reduce dependency on imported urea by 15-20%." },
               ].map((tip) => (
-                <div key={tip.title} className="bg-white rounded-xl p-3 border border-green-100">
+                <div key={tip.title} className="bg-[var(--bg-card)] rounded-xl p-3 border border-green-100">
                   <p className="text-xs font-bold text-green-700">{tip.emoji} {tip.title}</p>
-                  <p className="text-xs text-gray-600 mt-1">{tip.desc}</p>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">{tip.desc}</p>
                 </div>
               ))}
             </div>

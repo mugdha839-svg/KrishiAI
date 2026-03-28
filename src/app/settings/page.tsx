@@ -10,19 +10,19 @@ const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } };
 
 function Toggle({ enabled, onToggle, label, desc, icon }: { enabled: boolean; onToggle: () => void; label: string; desc: string; icon: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition">
+    <div className="flex items-center justify-between p-4 rounded-xl hover:bg-[var(--bg-muted)] transition">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
           {icon}
         </div>
         <div>
-          <p className="text-sm font-semibold text-gray-800">{label}</p>
-          <p className="text-xs text-gray-400">{desc}</p>
+          <p className="text-sm font-semibold text-[var(--text-primary)]">{label}</p>
+          <p className="text-xs text-[var(--text-muted)]">{desc}</p>
         </div>
       </div>
       <button onClick={onToggle}
         className={`relative w-12 h-6 rounded-full transition-colors ${enabled ? "bg-emerald-500" : "bg-gray-300"}`}>
-        <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform ${enabled ? "translate-x-6" : "translate-x-0.5"}`} />
+        <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-[var(--bg-card)] shadow transition-transform ${enabled ? "translate-x-6" : "translate-x-0.5"}`} />
       </button>
     </div>
   );
@@ -44,8 +44,8 @@ export default function SettingsPage() {
     <AppShell>
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 max-w-2xl mx-auto">
         <motion.div variants={item}>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="text-sm text-gray-500">Customize your KrishiAI experience</p>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Settings</h1>
+          <p className="text-sm text-[var(--text-secondary)]">Customize your KrishiAI experience</p>
         </motion.div>
 
         {/* Profile Card */}
@@ -55,12 +55,12 @@ export default function SettingsPage() {
               {farmerProfile.avatar}
             </div>
             <div className="flex-1">
-              <p className="text-lg font-bold text-gray-900">{farmerProfile.name}</p>
-              <p className="text-sm text-gray-500">{farmerProfile.phone}</p>
-              <p className="text-xs text-gray-400">{farmerProfile.district}, {farmerProfile.state} • {farmerProfile.acres} acres</p>
+              <p className="text-lg font-bold text-[var(--text-primary)]">{farmerProfile.name}</p>
+              <p className="text-sm text-[var(--text-secondary)]">{farmerProfile.phone}</p>
+              <p className="text-xs text-[var(--text-muted)]">{farmerProfile.district}, {farmerProfile.state} • {farmerProfile.acres} acres</p>
             </div>
-            <button className="p-2 rounded-xl hover:bg-gray-100 transition">
-              <ChevronRight className="w-5 h-5 text-gray-400" />
+            <button className="p-2 rounded-xl hover:bg-[var(--bg-muted)] transition">
+              <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
             </button>
           </div>
         </motion.div>
@@ -69,7 +69,7 @@ export default function SettingsPage() {
         <motion.div variants={item} className="gc p-5">
           <div className="flex items-center gap-2 mb-4">
             <Globe className="w-5 h-5 text-emerald-600" />
-            <h3 className="font-bold text-gray-900">Language</h3>
+            <h3 className="font-bold text-[var(--text-primary)]">Language</h3>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {supportedLanguages.map((l) => (
@@ -77,10 +77,10 @@ export default function SettingsPage() {
                 className={`p-3 rounded-xl text-left transition-all border ${
                   language === l.code
                     ? "bg-emerald-50 border-emerald-400 ring-1 ring-emerald-200"
-                    : "bg-white border-gray-200 hover:border-green-200"
+                    : "bg-[var(--bg-card)] border-[var(--border)] hover:border-green-200"
                 }`}>
-                <p className={`text-sm font-medium ${language === l.code ? "text-emerald-700" : "text-gray-700"}`}>{l.native}</p>
-                <p className="text-xs text-gray-400">{l.name}</p>
+                <p className={`text-sm font-medium ${language === l.code ? "text-emerald-700" : "text-[var(--text-primary)]"}`}>{l.native}</p>
+                <p className="text-xs text-[var(--text-muted)]">{l.name}</p>
               </button>
             ))}
           </div>
@@ -90,7 +90,7 @@ export default function SettingsPage() {
         <motion.div variants={item} className="gc overflow-hidden">
           <div className="flex items-center gap-2 p-5 pb-3">
             <Bell className="w-5 h-5 text-emerald-600" />
-            <h3 className="font-bold text-gray-900">Notifications</h3>
+            <h3 className="font-bold text-[var(--text-primary)]">Notifications</h3>
           </div>
           <div className="divide-y divide-gray-50">
             <Toggle enabled={notifications.priceAlerts}
@@ -115,7 +115,7 @@ export default function SettingsPage() {
         <motion.div variants={item} className="gc overflow-hidden">
           <div className="flex items-center gap-2 p-5 pb-3">
             <Smartphone className="w-5 h-5 text-emerald-600" />
-            <h3 className="font-bold text-gray-900">App Settings</h3>
+            <h3 className="font-bold text-[var(--text-primary)]">App Settings</h3>
           </div>
           <div className="divide-y divide-gray-50">
             <Toggle enabled={offlineMode} onToggle={() => setOfflineMode(!offlineMode)}
@@ -131,22 +131,22 @@ export default function SettingsPage() {
         <motion.div variants={item} className="gc p-5">
           <div className="flex items-center gap-2 mb-4">
             <Shield className="w-5 h-5 text-emerald-600" />
-            <h3 className="font-bold text-gray-900">Privacy & Security</h3>
+            <h3 className="font-bold text-[var(--text-primary)]">Privacy & Security</h3>
           </div>
           <div className="space-y-2">
-            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition">
+            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-[var(--bg-muted)] transition">
               <div className="flex items-center gap-3">
-                <Lock className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">Linked Aadhaar</span>
+                <Lock className="w-4 h-4 text-[var(--text-secondary)]" />
+                <span className="text-sm font-medium text-[var(--text-primary)]">Linked Aadhaar</span>
               </div>
-              <span className="text-sm text-gray-400">XXXX-XXXX-{farmerProfile.aadhaar_last4}</span>
+              <span className="text-sm text-[var(--text-muted)]">XXXX-XXXX-{farmerProfile.aadhaar_last4}</span>
             </button>
-            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition">
+            <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-[var(--bg-muted)] transition">
               <div className="flex items-center gap-3">
-                <Eye className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">Data Privacy Controls</span>
+                <Eye className="w-4 h-4 text-[var(--text-secondary)]" />
+                <span className="text-sm font-medium text-[var(--text-primary)]">Data Privacy Controls</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
+              <ChevronRight className="w-4 h-4 text-[var(--text-muted)]" />
             </button>
           </div>
         </motion.div>
@@ -159,7 +159,7 @@ export default function SettingsPage() {
         </motion.div>
 
         <div className="text-center pb-8">
-          <p className="text-xs text-gray-400">KrishiAI v1.0.0 • Made with ❤️ for Indian Farmers</p>
+          <p className="text-xs text-[var(--text-muted)]">KrishiAI v1.0.0 • Made with ❤️ for Indian Farmers</p>
           <p className="text-xs text-gray-300 mt-1">Team CodeSmith • Hackathon 2026</p>
         </div>
       </motion.div>

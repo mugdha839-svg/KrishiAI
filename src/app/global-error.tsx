@@ -11,13 +11,13 @@ export default function GlobalError({
   return (
     <html>
       <body>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[var(--bg-muted)] flex items-center justify-center p-4">
           <div className="text-center max-w-md">
             <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-500 flex items-center justify-center">
               <Leaf className="w-9 h-9 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h1>
-            <p className="text-sm text-gray-500 mb-6">
+            <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Something went wrong</h1>
+            <p className="text-sm text-[var(--text-secondary)] mb-6">
               Don&apos;t worry, your data is safe. Please try again.
             </p>
             <button

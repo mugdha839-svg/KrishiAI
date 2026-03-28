@@ -2,7 +2,8 @@
 import AppShell from "@/components/layout/AppShell";
 import { motion } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, RadialBarChart, RadialBar } from "recharts";
-import { healthScore, farmerProfile } from "@/lib/mockData";
+import { healthScore as mockHealthScore, farmerProfile } from "@/lib/mockData";
+import { getCurrentUser } from "@/lib/userAuth";
 import { HeartPulse, TrendingUp, Download, Zap, ArrowRight, ChevronRight, Star } from "lucide-react";
 import Link from "next/link";
 
@@ -25,7 +26,10 @@ const linkMap: Record<string, string> = {
 };
 
 export default function HealthScorePage() {
-  const { overall, max, breakdown, tips, history } = healthScore;
+  const user = getCurrentUser();
+  const profile = user || farmerProfile;
+  const overall = user?.healthScore || mockHealthScore.overall;
+  const { max, breakdown, tips, history } = mockHealthScore;
   const { grade, color, bg } = getScoreGrade(overall);
   const scorePct = (overall / max) * 100;
 
@@ -35,8 +39,8 @@ export default function HealthScorePage() {
     <AppShell>
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-6 max-w-4xl mx-auto">
         <motion.div variants={item}>
-          <h1 className="text-2xl font-bold text-gray-900">Farm Health Score</h1>
-          <p className="text-sm text-gray-500">Your comprehensive agricultural credit score</p>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Farm Health Score</h1>
+          <p className="text-sm text-[var(--text-secondary)]">Your comprehensive agricultural credit score</p>
         </motion.div>
 
         {/* Main Score Card */}
@@ -51,13 +55,13 @@ export default function HealthScorePage() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <p className="text-4xl font-bold" style={{ color }}>{overall}</p>
-                <p className="text-xs text-gray-400">out of {max}</p>
+                <p className="text-xs text-[var(--text-muted)]">out of {max}</p>
                 <p className="text-sm font-bold mt-1" style={{ color }}>{grade}</p>
               </div>
             </div>
             <div className="flex-1 text-center sm:text-left">
-              <h2 className="text-xl font-bold text-gray-900">{farmerProfile.name}&apos;s Farm Score</h2>
-              <p className="text-sm text-gray-500 mt-1">{farmerProfile.district}, {farmerProfile.state} • {farmerProfile.acres} acres</p>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">{profile.name}&apos;s Farm Score</h2>
+              <p className="text-sm text-[var(--text-secondary)] mt-1">{profile.district}, {profile.state} • {profile.acres} acres</p>
               <div className="flex flex-wrap gap-2 mt-3 justify-center sm:justify-start">
                 <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${bg}`} style={{ color }}>{grade}</span>
                 <span className="px-3 py-1.5 rounded-full text-xs font-bold bg-blue-50 text-blue-600 flex items-center gap-1">
@@ -73,23 +77,23 @@ export default function HealthScorePage() {
 
         {/* Score Breakdown */}
         <motion.div variants={item} className="gc p-5">
-          <h3 className="font-bold text-gray-900 mb-4">Score Breakdown</h3>
+          <h3 className="font-bold text-[var(--text-primary)] mb-4">Score Breakdown</h3>
           <div className="space-y-3">
             {breakdown.map((b) => {
               const link = linkMap[b.category] || "/dashboard";
               const barColor = b.score >= 80 ? "#2ECC71" : b.score >= 65 ? "#F39C12" : "#E74C3C";
               return (
                 <Link key={b.category} href={link} className="block">
-                  <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition group">
+                  <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-[var(--bg-muted)] transition group">
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-sm font-medium text-gray-700 group-hover:text-emerald-700 transition">{b.category}</span>
+                        <span className="text-sm font-medium text-[var(--text-primary)] group-hover:text-emerald-700 transition">{b.category}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-bold" style={{ color: barColor }}>{b.score}/{b.max}</span>
-                          <span className="text-[10px] text-gray-400">({b.weight}% weight)</span>
+                          <span className="text-[10px] text-[var(--text-muted)]">({b.weight}% weight)</span>
                         </div>
                       </div>
-                      <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="w-full h-2 bg-[var(--bg-muted)] rounded-full overflow-hidden">
                         <motion.div initial={{ width: 0 }} animate={{ width: `${b.score}%` }}
                           transition={{ duration: 1, ease: "easeOut" }}
                           className="h-full rounded-full" style={{ background: barColor }} />
@@ -106,7 +110,7 @@ export default function HealthScorePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* Score History */}
           <motion.div variants={item} className="gc p-5">
-            <h3 className="font-bold text-gray-900 mb-4">Score Trend</h3>
+            <h3 className="font-bold text-[var(--text-primary)] mb-4">Score Trend</h3>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={history}>
                 <XAxis dataKey="quarter" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "#9CA3AF" }} />
@@ -121,7 +125,7 @@ export default function HealthScorePage() {
           <motion.div variants={item} className="gc p-5">
             <div className="flex items-center gap-2 mb-4">
               <Zap className="w-5 h-5 text-emerald-600" />
-              <h3 className="font-bold text-gray-900">AI Improvement Tips</h3>
+              <h3 className="font-bold text-[var(--text-primary)]">AI Improvement Tips</h3>
             </div>
             <div className="space-y-3">
               {tips.map((tip, i) => (
