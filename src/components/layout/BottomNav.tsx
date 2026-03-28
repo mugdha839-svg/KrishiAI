@@ -14,14 +14,15 @@ const items = [
 export default function BottomNav() {
   const pathname = usePathname();
   return (
-    <nav className="bottom-nav md:hidden">
+    <nav className="bottom-nav lg:hidden">
       {items.map((item) => {
         const active = pathname === item.href || pathname.startsWith(item.href + "/");
         return (
-          <Link key={item.href} href={item.href} className={`flex flex-col items-center gap-0.5 px-3 py-1 rounded-xl transition-all ${active ? "text-emerald-600" : "text-gray-400"}`}>
-            <item.icon className={`w-5 h-5 ${active ? "text-emerald-500" : ""}`} />
-            <span className="text-[10px] font-medium">{item.label}</span>
-            {item.href === "/crisis" && <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full" />}
+          <Link key={item.href} href={item.href}
+            className="flex flex-col items-center gap-0.5 px-3 py-1.5 transition-all relative">
+            <item.icon className={`w-5 h-5 ${active ? "text-green-600" : "text-gray-400"}`} />
+            <span className={`text-[10px] font-semibold ${active ? "text-green-600" : "text-gray-400"}`}>{item.label}</span>
+            {item.href === "/crisis" && <span className="absolute top-0.5 right-1 w-1.5 h-1.5 bg-red-500 rounded-full pulse-dot" />}
           </Link>
         );
       })}

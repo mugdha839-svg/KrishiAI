@@ -5,11 +5,13 @@ import BottomNav from "./BottomNav";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#F0F7F0]">
+    <div className="min-h-screen bg-gray-50/50">
       <Sidebar />
-      <div className="md:ml-[260px]">
+      <div className="main-content-area">
         <TopBar />
-        <main className="page-container animate-fade-in">{children}</main>
+        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 pb-28 lg:pb-8 max-w-[1400px] w-full mx-auto">
+          {children}
+        </main>
       </div>
       <BottomNav />
     </div>
