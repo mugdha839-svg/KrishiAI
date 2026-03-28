@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { chatMessages } from "@/lib/mockData";
 import { getCurrentUser } from "@/lib/userAuth";
-import { Send, Mic, MicOff, Sparkles, Loader2, Bot } from "lucide-react";
+import { Send, Mic, MicOff, Sparkles, Loader2, Bot, BrainCircuit } from "lucide-react";
 
 interface Message {
   id: string;
@@ -30,6 +30,21 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [listening, setListening] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const renderFormattedText = (text: string) => {
+    return text.split('\n').map((line, i) => {
+      const parts = line.split(/(\*\*.*?\*\*)/g);
+      return (
+        <span key={i} className="block mb-1.5 last:mb-0">
+          {parts.map((p, j) => 
+            p.startsWith('**') && p.endsWith('**') ? 
+              <strong key={j} className="font-semibold text-green-700 dark:text-green-400">{p.slice(2, -2)}</strong> : 
+              <span key={j}>{p}</span>
+          )}
+        </span>
+      );
+    });
+  };
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -139,14 +154,20 @@ export default function ChatPage() {
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
               <div className="max-w-[85%] sm:max-w-[70%]">
                 <div className={msg.role === "user" ? "chat-bubble-user" : "chat-bubble-ai"}>
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.text.replace(/<think>[\s\S]*?<\/think>/g, '').trim()}</p>
+                  {msg.role === "assistant" && msg.text.includes("<think>") && (
+                    <details className="mb-3 border border-green-200/50 dark:border-green-900/50 rounded-lg overflow-hidden transition-all bg-[var(--bg-card)]">
+                      <summary className="cursor-pointer text-xs font-semibold text-green-600 dark:text-green-500 flex items-center gap-2 p-2.5 relative hover:bg-green-50 dark:hover:bg-green-900/20 select-none list-none [&::-webkit-details-marker]:hidden">
+                        <BrainCircuit className="w-3.5 h-3.5" /> View AI Reasoning Process
+                      </summary>
+                      <div className="p-3 text-xs text-[var(--text-secondary)] whitespace-pre-wrap border-t border-[var(--border)] leading-relaxed italic opacity-90 bg-[var(--bg-muted)]">
+                        {msg.text.match(/<think>([\s\S]*?)<\/think>/)?.[1].trim()}
+                      </div>
+                    </details>
+                  )}
+                  <div className="text-sm leading-relaxed">
+                    {msg.role === "user" ? msg.text : renderFormattedText(msg.text.replace(/<think>[\s\S]*?<\/think>/g, '').trim())}
+                  </div>
                 </div>
-                {msg.text.includes("<think>") && (
-                   <details className="mt-2 text-xs text-gray-500 bg-gray-50 p-2 rounded-lg" style={{ background: "var(--bg-muted)" }}>
-                     <summary className="cursor-pointer font-medium hover:text-green-600">View DeepSeek Reasoning</summary>
-                     <p className="mt-1 whitespace-pre-wrap">{msg.text.match(/<think>([\s\S]*?)<\/think>/)?.[1]}</p>
-                   </details>
-                )}
                 <p className={`text-[10px] mt-1 px-2 text-[var(--text-muted)] ${msg.role === "user" ? "text-right" : ""}`}>{msg.time}</p>
               </div>
             </motion.div>
