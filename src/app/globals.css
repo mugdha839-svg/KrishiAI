@@ -305,6 +305,17 @@ input:focus, textarea:focus, select:focus {
   .main-content-area { margin-left: var(--sidebar-width); }
 }
 
+/* Equal spacing guarantee: all page content has same horizontal padding as vertical */
+.page-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;  /* uniform 24px gap between every card row */
+}
+@media (max-width: 640px) {
+  .page-content { padding: 16px; gap: 16px; }
+}
+
 /* ════════════════════════════════════════════
    ANIMATIONS
    ════════════════════════════════════════════ */

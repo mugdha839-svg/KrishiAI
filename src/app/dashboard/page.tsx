@@ -3,7 +3,8 @@ import AppShell from "@/components/layout/AppShell";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { kpiData, crisisData, marketPrices, weatherData, recentActivities } from "@/lib/mockData";
+import { crisisData, marketPrices, weatherData, kpiData, recentActivities } from "@/lib/mockData";
+import { getCurrentUser } from "@/lib/userAuth";
 import { formatCurrency } from "@/lib/utils";
 import { StatCard, AlertCard, ActionCard, ChartCard } from "@/components/ui/Cards";
 import {
@@ -19,6 +20,9 @@ const stagger = {
 const up = { hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 }} };
 
 export default function Dashboard() {
+  const user = getCurrentUser();
+  const kpi = user?.kpi ?? kpiData;
+  const activities = user?.recentActivities ?? recentActivities;
   return (
     <AppShell>
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6">
@@ -27,29 +31,29 @@ export default function Dashboard() {
         <motion.div variants={up} className="grid grid-cols-2 lg:grid-cols-4 gap-5">
           <StatCard
             title="Net Profit Forecast"
-            value={formatCurrency(kpiData.netProfitForecast)}
-            change={kpiData.netProfitChange}
+            value={formatCurrency(kpi.netProfitForecast)}
+            change={kpi.netProfitChange}
             icon={<TrendingUp className="w-5 h-5" />}
             iconBg="rgba(34,197,94,0.12)" iconColor="var(--green-600)"
           />
           <StatCard
             title="Land Coverage"
-            value={`${kpiData.landCoverage} Acres`}
-            subtitle={`${kpiData.landUtilization}% utilized`}
+            value={`${kpi.landCoverage} Acres`}
+            subtitle={`${kpi.landUtilization}% utilized`}
             icon={<Sprout className="w-5 h-5" />}
             iconBg="rgba(59,130,246,0.12)" iconColor="#2563EB"
           />
           <StatCard
             title="Active Loans"
-            value={String(kpiData.activeLoans)}
-            subtitle={formatCurrency(kpiData.totalLoanAmount)}
+            value={String(kpi.activeLoans)}
+            subtitle={formatCurrency(kpi.totalLoanAmount)}
             icon={<Landmark className="w-5 h-5" />}
             iconBg="rgba(245,158,11,0.12)" iconColor="#D97706"
           />
           <StatCard
             title="Scheme Benefits"
-            value={formatCurrency(kpiData.schemeBenefits)}
-            subtitle={`${kpiData.schemesApplied} active`}
+            value={formatCurrency(kpi.schemeBenefits)}
+            subtitle={`${kpi.schemesApplied} active`}
             icon={<FileText className="w-5 h-5" />}
             iconBg="rgba(139,92,246,0.12)" iconColor="#7C3AED"
           />
@@ -212,7 +216,7 @@ export default function Dashboard() {
           <div className="card p-6">
             <h3 className="text-base font-bold mb-4" style={{ color: "var(--text-primary)" }}>Recent Activity</h3>
             <div className="space-y-1">
-              {recentActivities.map(a => (
+              {activities.map((a: { id: string; icon: string; text: string; time: string }) => (
                 <div
                   key={a.id}
                   className="flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-150"

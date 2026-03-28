@@ -1,23 +1,32 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Bell, Search, AlertTriangle, X, Moon, Sun } from "lucide-react";
-import { crisisData, farmerProfile, notifications } from "@/lib/mockData";
+import { useRouter } from "next/navigation";
+import { Bell, Search, AlertTriangle, X, LogOut } from "lucide-react";
+import { crisisData, notifications } from "@/lib/mockData";
+import { getCurrentUser, logoutUser, type DemoUser } from "@/lib/userAuth";
 import { getGreeting } from "@/lib/utils";
 
 export default function TopBar() {
   const [crisisDismissed, setCrisisDismissed] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [user, setUser] = useState<DemoUser | null>(null);
   const notifRef = useRef<HTMLDivElement>(null);
   const unread = notifications.filter((n) => !n.read).length;
+  const router = useRouter();
 
-  // Read theme on mount
   useEffect(() => {
     const saved = localStorage.getItem("krishiai-theme") ?? "light";
     setIsDark(saved === "dark");
     document.documentElement.setAttribute("data-theme", saved);
+    setUser(getCurrentUser());
   }, []);
+
+  const handleLogout = () => {
+    logoutUser();
+    router.push("/auth");
+  };
 
   // Close notif panel on outside click
   useEffect(() => {
@@ -37,6 +46,8 @@ export default function TopBar() {
     document.documentElement.setAttribute("data-theme", val);
     localStorage.setItem("krishiai-theme", val);
   };
+
+  const profile = user;
 
   return (
     <header
@@ -76,10 +87,10 @@ export default function TopBar() {
             className="text-base font-bold truncate"
             style={{ color: "var(--text-primary)" }}
           >
-            {getGreeting()}, {farmerProfile.name} 👋
+            {getGreeting()}, {profile?.name ?? "Farmer"} 👋
           </h2>
           <p className="text-xs truncate" style={{ color: "var(--text-muted)" }}>
-            {farmerProfile.village}, {farmerProfile.district} · {farmerProfile.acres} acres
+            {profile?.village ?? ""}, {profile?.district ?? ""} · {profile?.acres ?? ""} acres
           </p>
         </div>
 
@@ -167,12 +178,30 @@ export default function TopBar() {
             )}
           </div>
 
-          {/* Avatar */}
-          <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
-            style={{ background: "var(--green-500)" }}
-          >
-            {farmerProfile.avatar}
+          {/* Avatar + Logout */}
+          <div className="flex items-center gap-2">
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
+              style={{ background: "var(--green-500)" }}
+              title={profile?.name}
+            >
+              {profile?.avatar ?? "?"}
+            </div>
+            <button
+              onClick={handleLogout}
+              title="Sign out"
+              style={{
+                padding: "6px 8px", borderRadius: 8,
+                background: "var(--bg-muted)",
+                border: "1px solid var(--border)",
+                cursor: "pointer", color: "var(--text-muted)",
+                display: "flex", alignItems: "center",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#DC2626"; (e.currentTarget as HTMLElement).style.color = "#DC2626"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.color = "var(--text-muted)"; }}
+            >
+              <LogOut style={{ width: 14, height: 14 }} />
+            </button>
           </div>
         </div>
       </div>
