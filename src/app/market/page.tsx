@@ -37,7 +37,7 @@ export default function MarketPage() {
         </motion.div>
 
         {/* Price Overview Cards */}
-        <motion.div variants={item} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <motion.div variants={item} className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="gc p-5 border-l-4 border-emerald-400">
             <p className="text-xs text-[var(--text-secondary)] font-medium uppercase">Current Price</p>
             <p className="text-3xl font-bold text-[var(--text-primary)] mt-1">₹{crop.currentPrice}</p>
@@ -84,7 +84,7 @@ export default function MarketPage() {
           </ResponsiveContainer>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Mandi Comparison Table */}
           <motion.div variants={item} className="gc p-5">
             <h3 className="font-bold text-[var(--text-primary)] mb-4">Nearest Mandis</h3>

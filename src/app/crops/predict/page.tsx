@@ -51,7 +51,7 @@ export default function CropPredictPage() {
           <SectionHeader title="Crop Profit Prediction" subtitle="AI-powered profit forecasting with crisis-adjusted costs" />
 
           {/* Step Indicator */}
-          <div className="flex items-center justify-between my-8 px-2">
+          <div className="flex items-center justify-between mb-8 mt-2 px-2 overflow-x-auto pb-4">
             {steps.map((s, i) => (
               <div key={i} className="flex items-center">
                 <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
@@ -68,7 +68,7 @@ export default function CropPredictPage() {
           <AnimatePresence mode="wait">
             {step === 0 && !showResult && (
               <motion.div key="step0" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <Card padding="lg" className="space-y-5">
+                <Card padding="lg" className="space-y-6">
                   <div>
                     <label className="block text-sm font-semibold text-[var(--text-primary)] mb-2">Select Crop</label>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -103,7 +103,7 @@ export default function CropPredictPage() {
 
             {step === 1 && !showResult && (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <Card padding="lg" className="space-y-5">
+                <Card padding="lg" className="space-y-6">
                   <div>
                     <label className="block text-sm font-semibold text-[var(--text-primary)] mb-2">Soil Type</label>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -140,7 +140,7 @@ export default function CropPredictPage() {
 
             {step === 2 && !showResult && (
               <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <Card padding="lg" className="space-y-5">
+                <Card padding="lg" className="space-y-6">
                   <AlertCard icon={<AlertTriangle className="w-5 h-5" />} label="Active Crisis" title="Fertilizer Crisis Adjustment Active" variant="danger">
                     <p className="text-xs text-red-500 mt-1">Costs auto-inflated by +{crisisData.ureaSpikePct}% due to Strait of Hormuz disruption</p>
                   </AlertCard>
